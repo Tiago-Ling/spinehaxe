@@ -163,7 +163,7 @@ class AnimationState {
 		return null;
 	}
 
-	function setCurrent(index:Int, entry:TrackEntry):Void {
+	public function setCurrent(index:Int, entry:TrackEntry):Void {
 		var current:TrackEntry = expandToIndex(index);
 		if (current != null) {
 			var previous:TrackEntry = current.previous;

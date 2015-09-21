@@ -36,7 +36,8 @@ import spinehaxe.atlas.Atlas;
 import spinehaxe.atlas.AtlasRegion;
 
 class AtlasAttachmentLoader implements AttachmentLoader {
-	private var atlas:Atlas;
+	//private var atlas:Atlas;
+	public var atlas:Atlas;
 
 	public function new (atlas:Atlas) {
 		if (atlas == null)

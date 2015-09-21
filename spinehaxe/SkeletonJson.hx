@@ -29,6 +29,7 @@
  *****************************************************************************/
 
 package spinehaxe;
+import spinehaxe.attachments.AtlasAttachmentLoader;
 import spinehaxe.Exception.IllegalArgumentException;
 import spinehaxe.animation.Animation;
 import spinehaxe.animation.AttachmentTimeline;
@@ -541,6 +542,14 @@ class SkeletonJson {
 		}
 
 		skeletonData.animations[skeletonData.animations.length] = new Animation(name, timelines, duration);
+	}
+	
+	public function dispose()
+	{
+		var atlasAttachmentLoader = cast(attachmentLoader, AtlasAttachmentLoader);
+		atlasAttachmentLoader.atlas.dispose();
+		atlasAttachmentLoader.atlas = null;
+		atlasAttachmentLoader = null;
 	}
 
 	static private function readCurve (timeline:CurveTimeline, frameIndex:Int, valueMap:JsonNode) : Void {

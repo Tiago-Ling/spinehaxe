@@ -49,6 +49,85 @@ class SkeletonData {
 	public var height:Float = 0;
 	public var version:String;
 	public var hash:String;
+	
+	public function dispose() 
+	{
+		if (bones != null) {
+			for (bone in bones) {
+				bone.parent = null;
+				bone = null;
+			}
+			bones = null;
+		}
+		
+		if (slots != null) {
+			for (slot in slots) {
+				if (slot.boneData != null) {
+					slot.boneData.parent = null;
+					slot.boneData = null;
+				}
+				slot = null;
+			}
+			slots = null;
+		}
+		
+		if (skins != null) {
+			for (skin in skins) {
+				if (skin != null && skin.attachments != null) {
+					for (attachment in skin.attachments) {
+						if (attachment != null) {
+							for (key in attachment.keys()) {
+								attachment.remove(key);
+							}
+							attachment = null;
+						}
+						skin.attachments = null;
+					}
+				}
+				skin = null;
+			}
+			skins = null;
+		}
+		
+		defaultSkin = null;
+		
+		if (events != null) {
+			for (event in events) {
+				event = null;
+			}
+			events = null;
+		}
+		
+		if (animations != null) {
+			for (anim in animations) {
+				
+				if (anim != null && anim.timelines != null) {
+					for (tl in anim.timelines) {
+						tl = null;
+					}
+					anim.timelines = null;
+				}
+				anim = null;
+			}
+			animations = null;
+		}
+		
+		if (ikConstraints != null) {
+			for (constraint in ikConstraints) {
+				if (constraint.bones != null) {
+					for (bone in constraint.bones) {
+						if (bone != null) {
+							bone.parent = null;
+							bone = null;
+						}
+					}
+					constraint.bones = null;
+				}
+				constraint = null;
+			}
+			ikConstraints = null;
+		}
+	}
 
 	// --- Bones.
 

@@ -53,6 +53,124 @@ class Skeleton {
 	public var flipY:Bool = false;
 	public var x(default, set):Float = 0;
 	public var y(default, set):Float = 0;
+	
+	public function dispose()
+	{
+		data = null;
+		if (bones != null) {
+			for (bone in bones) {
+				if (bone != null) {
+					if (bone.data != null) {
+						bone.data.parent = null;
+						bone.data = null;
+					}
+					
+					bone.parent = null;
+					bone.skeleton = null;
+					bone = null;
+				}
+			}
+			bones = null;
+		}
+		
+		if (slots != null) {
+			for (slot in slots) {
+				if (slot != null) {
+					if (slot.bone != null) {
+						if (slot.bone.data != null) {
+							slot.bone.data.parent = null;
+							slot.bone.data = null;
+						}
+						slot.bone.parent = null;
+						slot.bone.skeleton = null;
+						slot.bone = null;
+					}
+					
+					if (slot.attachment != null)
+						slot.attachment = null;
+						
+					if (slot.attachmentVertices != null)
+						slot.attachmentVertices = null;
+						
+					if (slot.data != null && slot.data.boneData != null) {
+						slot.data.boneData.parent = null;
+						slot.data.boneData = null;
+					}
+					slot.data = null;
+					
+					//slot.skeleton = null;
+				}
+				slot = null;
+			}
+			slots = null;
+		}
+		
+		if (drawOrder != null) {
+			for (slot in drawOrder) {
+				if (slot != null) {
+					if (slot.bone != null) {
+						if (slot.bone.data != null) {
+							slot.bone.data.parent = null;
+							slot.bone.data = null;
+						}
+						slot.bone.parent = null;
+						slot.bone.skeleton = null;
+						slot.bone = null;
+					}
+					
+					slot.attachment = null;
+					slot.attachmentVertices = null;
+					if (slot.data != null && slot.data.boneData != null) {
+						slot.data.boneData.parent = null;
+						slot.data.boneData = null;
+					}
+					slot.data = null;
+					
+					//slot.skeleton = null;
+				}
+				slot = null;
+			}
+			drawOrder = null;
+		}
+		
+		if (ikConstraints != null) {
+			for (constraint in ikConstraints) {
+				if (constraint.bones != null) {
+					for (bone in constraint.bones) {
+						if (bone != null) {
+							bone.parent = null;
+							bone = null;
+						}
+					}
+					constraint.bones = null;
+				}
+				constraint = null;
+			}
+			ikConstraints = null;
+		}
+		
+		if (_boneCache != null) {
+			for (_bones in _boneCache) {
+				if (_bones != null) {
+					for (_bone in _bones) {
+						if (_bone != null) {
+							if (_bone.data != null) {
+								_bone.data.parent = null;
+								_bone.data = null;
+							}
+							_bone.parent = null;
+							_bone.skeleton = null;
+							_bone = null;
+						}
+					}
+					_bones = null;
+				}
+			}
+			_boneCache = null;
+		}
+		
+		//rootBone = null;
+	}
 
 	public function new(data:SkeletonData) {
 		if (data == null)

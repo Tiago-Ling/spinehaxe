@@ -64,8 +64,10 @@ class Slot {
 	 * @param attachment May be null. */
 	public function set_attachment(attachment:Attachment):Attachment {
 		this.attachment = attachment;
-		_attachmentTime = skeleton.time;
-		attachmentVertices.splice(0, attachmentVertices.length);
+		if (attachment != null) {
+			_attachmentTime = skeleton.time;
+			attachmentVertices.splice(0, attachmentVertices.length);
+		}
 		return attachment;
 	}
 
