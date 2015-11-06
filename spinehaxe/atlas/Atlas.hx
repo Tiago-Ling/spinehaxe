@@ -30,6 +30,7 @@
 
 package spinehaxe.atlas;
 
+import flixel.addons.editors.spine.texture.FlixelTextureLoader;
 import spinehaxe.atlas.Format;
 import spinehaxe.Exception.IllegalArgumentException;
 import haxe.ds.Vector;
@@ -154,8 +155,30 @@ class Atlas {
 	}
 
 	public function dispose () : Void {
-		for (i in 0 ... pages.length)
-			textureLoader.unloadPage(pages[i]);
+		if (pages != null) {
+			for (i in 0 ... pages.length) {
+				textureLoader.unloadPage(pages[i]);
+				pages[i] = null;
+			}
+			pages = null;
+		}
+		
+		if (regions != null) {
+			for (i in 0...regions.length) {
+				regions[i].name = null;
+				regions[i].pads = null;
+				regions[i].page = null;
+				regions[i].rendererObject = null;
+				regions[i].splits = null;
+				regions[i] = null;
+			}
+			regions = null;
+		}
+		
+		if (textureLoader != null) {
+			cast(textureLoader, FlixelTextureLoader).dispose();
+			textureLoader = null;
+		}
 	}
 }
 
