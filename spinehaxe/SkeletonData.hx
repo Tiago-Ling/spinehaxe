@@ -31,6 +31,10 @@
 package spinehaxe;
 
 import spinehaxe.animation.Animation;
+import spinehaxe.attachments.BoundingBoxAttachment;
+import spinehaxe.attachments.MeshAttachment;
+import spinehaxe.attachments.RegionAttachment;
+import spinehaxe.attachments.SkinnedMeshAttachment;
 import spinehaxe.Exception;
 import haxe.ds.Vector;
 
@@ -53,77 +57,85 @@ class SkeletonData {
 	public function dispose() 
 	{
 		if (bones != null) {
-			for (bone in bones) {
-				bone.parent = null;
-				bone = null;
+			for (i in 0...bones.length) {
+				if (bones[i] != null) {
+					bones[i].parent = null;
+					bones[i] = null;
+				}
 			}
 			bones = null;
 		}
 		
 		if (slots != null) {
-			for (slot in slots) {
-				if (slot.boneData != null) {
-					slot.boneData.parent = null;
-					slot.boneData = null;
+			for (i in 0...slots.length) {
+				if (slots[i] != null) {
+					slots[i].attachmentName = null;
+					slots[i].name = null;
+					if (slots[i].boneData != null) {
+						slots[i].boneData.name = null;
+						slots[i].boneData.parent = null;
+						slots[i].boneData = null;
+					}
 				}
-				slot = null;
+				slots[i]= null;
 			}
 			slots = null;
 		}
 		
 		if (skins != null) {
-			for (skin in skins) {
-				if (skin != null && skin.attachments != null) {
-					for (attachment in skin.attachments) {
-						if (attachment != null) {
-							for (key in attachment.keys()) {
-								attachment.remove(key);
-							}
-							attachment = null;
-						}
-						skin.attachments = null;
-					}
+			for (i in 0...skins.length) {
+				if (skins[i] != null) {
+					skins[i].dispose();
+					skins[i] = null;
 				}
-				skin = null;
 			}
 			skins = null;
 		}
 		
-		defaultSkin = null;
+		if (defaultSkin != null) {
+			defaultSkin.dispose();
+			defaultSkin = null;
+		}
 		
 		if (events != null) {
-			for (event in events) {
-				event = null;
+			for (i in 0...events.length) {
+				events[i].name = null;
+				events[i].stringValue = null;
+				events[i] = null;
 			}
 			events = null;
 		}
 		
 		if (animations != null) {
-			for (anim in animations) {
-				
-				if (anim != null && anim.timelines != null) {
-					for (tl in anim.timelines) {
-						tl = null;
+			for (i in 0...animations.length) {
+				if (animations[i] != null) {
+					animations[i].name = null;
+					if (animations[i].timelines != null) {
+						for (j in 0...animations[i].timelines.length) {
+							animations[i].timelines[j] = null;
+						}
+						animations[i].timelines = null;
 					}
-					anim.timelines = null;
+					animations[i] = null;
 				}
-				anim = null;
 			}
 			animations = null;
 		}
 		
 		if (ikConstraints != null) {
-			for (constraint in ikConstraints) {
-				if (constraint.bones != null) {
-					for (bone in constraint.bones) {
-						if (bone != null) {
-							bone.parent = null;
-							bone = null;
+			for (i in 0...ikConstraints.length) {
+				if (ikConstraints[i] != null) {
+					if (ikConstraints[i].bones != null) {
+						for (j in 0...ikConstraints[i].bones.length) {
+							ikConstraints[i].bones[j].name = null;
+							ikConstraints[i].bones[j].parent = null;
+							ikConstraints[i].bones[j] = null;
 						}
 					}
-					constraint.bones = null;
+					ikConstraints[i].name = null;
+					ikConstraints[i].target = null;
+					ikConstraints[i] = null;
 				}
-				constraint = null;
 			}
 			ikConstraints = null;
 		}

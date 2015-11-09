@@ -30,6 +30,8 @@
 
 package spinehaxe.atlas;
 
+import flixel.FlxStrip;
+import openfl.display.BitmapData;
 import spinehaxe.atlas.Format;
 
 class AtlasPage {
@@ -43,5 +45,26 @@ class AtlasPage {
 	public var width:Int = 0;
 	public var height:Int = 0;
 
-	public function new() {}
+	public function new() { }
+
+	public function dispose()
+	{
+		name = null;
+		format = null;
+		minFilter = null;
+		magFilter = null;
+		uWrap = null;
+		vWrap = null;
+		if (rendererObject != null) {
+			if (Std.is(rendererObject, BitmapData))
+				cast(rendererObject, BitmapData).dispose();
+			else if (Std.is(rendererObject, AtlasRegion))
+				cast(rendererObject, AtlasRegion).dispose();
+			else if (Std.is(rendererObject, FlxStrip))
+				cast(rendererObject, FlxStrip).destroy();
+			else
+				trace('RendererObject type is ${Type.getClass(rendererObject)}');
+			rendererObject = null;
+		}
+	}
 }

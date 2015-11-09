@@ -30,6 +30,9 @@
 
 package spinehaxe.attachments;
 
+import flixel.FlxStrip;
+import openfl.display.BitmapData;
+import spinehaxe.atlas.AtlasRegion;
 import spinehaxe.Slot;
 import spinehaxe.Bone;
 
@@ -67,6 +70,30 @@ class MeshAttachment extends Attachment {
 
 	public function new (name:String) {
 		super(name);
+	}
+	
+	public function dispose()
+	{
+		name = null;
+		vertices = null;
+		uvs = null;
+		regionUVs = null;
+		triangles = null;
+		
+		path = null;
+		if (rendererObject != null) {
+			if (Std.is(rendererObject, BitmapData))
+				cast(rendererObject, BitmapData).dispose();
+			else if (Std.is(rendererObject, AtlasRegion))
+				cast(rendererObject, AtlasRegion).dispose();
+			else if (Std.is(rendererObject, FlxStrip))
+				cast(rendererObject, FlxStrip).destroy();
+			else
+				trace('RendererObject type is ${Type.getClass(rendererObject)}');
+			rendererObject = null;
+		}
+		
+		edges = null;
 	}
 
 	public function updateUVs () : Void {

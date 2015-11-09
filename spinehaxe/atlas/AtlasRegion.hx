@@ -29,6 +29,8 @@
  *****************************************************************************/
 
 package spinehaxe.atlas;
+import flixel.FlxStrip;
+import openfl.display.BitmapData;
 
 class AtlasRegion {
 	public var page:AtlasPage;
@@ -51,5 +53,30 @@ class AtlasRegion {
 	public var pads:Array<Int>;
 	public var rendererObject:Dynamic;
 
-	public function new() {}
+	public function new() { }
+
+	public function dispose()
+	{
+		if (page != null) {
+			page.dispose();
+			page = null;
+		}
+		
+		name = null;
+		splits = null;
+		pads = null;
+		
+		if (rendererObject != null) {
+			if (Std.is(rendererObject, BitmapData))
+				cast(rendererObject, BitmapData).dispose();
+			else if (Std.is(rendererObject, AtlasRegion))
+				cast(rendererObject, AtlasRegion).dispose();
+			else if (Std.is(rendererObject, FlxStrip))
+				cast(rendererObject, FlxStrip).destroy();
+			else
+				trace('RendererObject type is ${Type.getClass(rendererObject)}');
+			
+			rendererObject = null;
+		}
+	}
 }

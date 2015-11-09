@@ -29,7 +29,12 @@
  *****************************************************************************/
 package spinehaxe;
 
+import flixel.FlxStrip;
 import spinehaxe.attachments.Attachment;
+import spinehaxe.attachments.BoundingBoxAttachment;
+import spinehaxe.attachments.MeshAttachment;
+import spinehaxe.attachments.RegionAttachment;
+import spinehaxe.attachments.SkinnedMeshAttachment;
 import spinehaxe.Exception;
 
 /** Stores attachments by slot index and attachment name. */
@@ -40,6 +45,48 @@ class Skin {
 	public function new(name:String) {
 		if (name == null) throw new IllegalArgumentException("name cannot be null.");
 		this.name = name;
+	}
+	
+	public function dispose()
+	{
+		name = null;
+		if (attachments != null) {
+			for (j in 0...attachments.length) {
+				if (attachments[j] != null) {
+					for (key in attachments[j].keys()) {
+						var attachment:Attachment = attachments[j].get(key);
+						if (attachment != null) {
+							if (Std.is(attachment, MeshAttachment)) {
+								//trace('Attachment is a MeshAttachment');
+								var ma:MeshAttachment = cast(attachment, MeshAttachment);
+								ma.dispose();
+								ma = null;
+							} else if (Std.is(attachment, RegionAttachment)) {
+								//trace('Attachment is a RegionAttachment');
+								var ra:RegionAttachment = cast(attachment, RegionAttachment);
+								ra.dispose();
+								ra = null;
+							} else if (Std.is(attachment, SkinnedMeshAttachment)) {
+								//trace('Attachment is a SkinnedMeshAttachment');
+								var sa:SkinnedMeshAttachment = cast(attachment, SkinnedMeshAttachment);
+								sa.dispose();
+								sa = null;
+							} else if (Std.is(attachment, BoundingBoxAttachment)) {
+								//trace('Attachment is a BoundingBoxAttachment');
+								var ba:BoundingBoxAttachment = cast(attachment, BoundingBoxAttachment);
+								ba.dispose();
+								ba = null;
+							} else {
+								trace('Attachment is a unrecognized type');
+								attachment.name = null;
+							}
+							
+							attachment = null;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public function addAttachment(slotIndex:Int, name:String, attachment:Attachment):Void {

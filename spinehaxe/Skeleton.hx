@@ -56,7 +56,11 @@ class Skeleton {
 	
 	public function dispose()
 	{
+		if (data != null) {
+			data.dispose();
+		}
 		data = null;
+		
 		if (bones != null) {
 			for (bone in bones) {
 				if (bone != null) {

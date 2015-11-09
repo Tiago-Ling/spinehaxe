@@ -30,6 +30,9 @@
 
 package spinehaxe.attachments;
 
+import flixel.FlxStrip;
+import openfl.display.BitmapData;
+import spinehaxe.atlas.AtlasRegion;
 import spinehaxe.Bone;
 import haxe.ds.Vector;
 
@@ -72,6 +75,32 @@ class RegionAttachment extends Attachment implements Dynamic<Dynamic> {
 		offset = ArrayUtils.allocFloat(8);
 		uvs = new Array();
 		for (i in 0...8) { uvs[i] = 0; }
+	}
+	
+	public function dispose()
+	{
+		name = null;
+		path = null;
+		if (rendererObject != null) {
+			if (Std.is(rendererObject, BitmapData))
+				cast(rendererObject, BitmapData).dispose();
+			else if (Std.is(rendererObject, AtlasRegion))
+				cast(rendererObject, AtlasRegion).dispose();
+			else if (Std.is(rendererObject, FlxStrip))
+				cast(rendererObject, FlxStrip).destroy();
+			else
+				trace('RendererObject type is ${Type.getClass(rendererObject)}');
+			rendererObject = null;
+		}
+		
+		var wrapperStrip = Reflect.field(this, 'wrapperStrip');
+		if (wrapperStrip != null) {
+			cast(wrapperStrip, FlxStrip).destroy();
+			wrapperStrip = null;
+		}
+		
+		offset = null;
+		uvs = null;
 	}
 
 	public function setUVs (u:Float, v:Float, u2:Float, v2:Float, rotate:Bool) : Void {

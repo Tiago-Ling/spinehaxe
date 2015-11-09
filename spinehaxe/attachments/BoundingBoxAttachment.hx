@@ -39,6 +39,12 @@ class BoundingBoxAttachment extends Attachment {
 		super(name);
 		vertices = new Array<Float>();
 	}
+	
+	public function dispose()
+	{
+		name = null;
+		vertices = null;
+	}
 
 	public function computeWorldVertices(x:Float, y:Float, bone:Bone, worldVertices:Array<Float>):Void {
 		x += bone.worldX;
