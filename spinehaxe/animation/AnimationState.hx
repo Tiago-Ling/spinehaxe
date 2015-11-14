@@ -57,6 +57,59 @@ class AnimationState {
 			throw new IllegalArgumentException("data cannot be null.");
 		this.data = data;
 	}
+	
+	public function dispose()
+	{
+		if (events != null) {
+			for (i in 0...events.length) {
+				if (events[i].data != null) {
+					events[i].data.name = null;
+					events[i].data.stringValue = null;
+				}
+				events[i].data = null;
+				events[i].stringValue = null;
+				events[i] = null;
+			}
+			events = null;
+		}
+		
+		if (tracks != null) {
+			for (i in 0...tracks.length) {
+				if (tracks[i] != null) {
+					tracks[i].animation = null;
+					tracks[i].next = null;
+					tracks[i].onComplete = null;
+					tracks[i].onEnd = null;
+					tracks[i].onEvent = null;
+					tracks[i].onStart = null;
+					tracks[i].previous = null;
+				}
+				tracks[i] = null;
+			}
+			tracks = null;
+		}
+		
+		if (onStart.listeners != null) {
+			onStart.listeners = null;
+		}
+		
+		if (onComplete.listeners != null) {
+			onComplete.listeners = null;
+		}
+		
+		if (onEnd.listeners != null) {
+			onEnd.listeners = null;
+		}
+		
+		if (onEvent.listeners != null) {
+			onEvent.listeners = null;
+		}
+		
+		if (data != null) {
+			data.skeletonData = null;
+			data = null;
+		}
+	}
 
 	public function update(delta:Float):Void {
 		delta *= timeScale;

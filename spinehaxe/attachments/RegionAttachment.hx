@@ -69,6 +69,8 @@ class RegionAttachment extends Attachment implements Dynamic<Dynamic> {
 
 	public var offset:Vector<Float>;
 	public var uvs:Array<Float>;
+	
+	public var wrapperStrip:FlxStrip;
 
 	public function new (name:String) {
 		super(name);
@@ -93,7 +95,7 @@ class RegionAttachment extends Attachment implements Dynamic<Dynamic> {
 			rendererObject = null;
 		}
 		
-		var wrapperStrip = Reflect.field(this, 'wrapperStrip');
+		//var wrapperStrip = Reflect.field(this, 'wrapperStrip');
 		if (wrapperStrip != null) {
 			cast(wrapperStrip, FlxStrip).destroy();
 			wrapperStrip = null;

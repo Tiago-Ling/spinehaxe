@@ -43,6 +43,12 @@ class AnimationStateData {
 		defaultMix = 0;
 		this.skeletonData = skeletonData;
 	}
+	
+	public function dispose()
+	{
+		skeletonData = null;
+		animationToMixTime = null;
+	}
 
 	public function setMixByName(fromName:String, toName:String, duration:Float):Void {
 		var from:Animation = skeletonData.findAnimation(fromName);
